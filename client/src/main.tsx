@@ -4,8 +4,7 @@ import "./index.css";
 import { cn } from "./lib/utils";
 
 // Apply font family to root
-document.documentElement.classList.add(
-  cn("font-sans antialiased")
-);
+document.documentElement.classList.add("font-sans");
+document.documentElement.classList.add("antialiased");
 
 createRoot(document.getElementById("root")!).render(<App />);
