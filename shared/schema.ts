@@ -21,6 +21,7 @@ export const memos = pgTable("memos", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
+  color: text("color").notNull().default("#ffffff"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -28,11 +29,13 @@ export const memos = pgTable("memos", {
 export const insertMemoSchema = createInsertSchema(memos).pick({
   title: true,
   content: true,
+  color: true,
 });
 
 export const updateMemoSchema = createInsertSchema(memos).pick({
   title: true,
   content: true,
+  color: true,
 });
 
 export type InsertMemo = z.infer<typeof insertMemoSchema>;

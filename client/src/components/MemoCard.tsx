@@ -34,8 +34,13 @@ export default function MemoCard({ memo, onEdit, onDelete }: MemoCardProps) {
     <div key={index}>{line}</div>
   ));
 
+  // カードの背景色を適用
+  const cardStyle = {
+    backgroundColor: memo.color || "#ffffff"
+  };
+
   return (
-    <Card className="memo-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all">
+    <Card className="memo-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all" style={cardStyle}>
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-medium text-lg line-clamp-1">{memo.title}</h3>

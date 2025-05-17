@@ -61,8 +61,12 @@ export class MemStorage implements IStorage {
     const id = this.currentMemoId++;
     const now = new Date();
     
+    // Ensure color has a default value if not provided
+    const color = insertMemo.color || "#ffffff";
+    
     const memo: Memo = {
       ...insertMemo,
+      color,
       id,
       createdAt: now,
       updatedAt: now,
@@ -79,9 +83,13 @@ export class MemStorage implements IStorage {
       return undefined;
     }
     
+    // Ensure color has a value
+    const color = updateData.color || memo.color;
+    
     const updatedMemo: Memo = {
       ...memo,
       ...updateData,
+      color,
       updatedAt: new Date(),
     };
     
