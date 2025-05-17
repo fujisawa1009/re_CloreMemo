@@ -10,6 +10,13 @@ import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Memo } from "@shared/schema";
 
+// フォームから送信されるデータ型を定義
+type MemoFormData = {
+  title: string;
+  content: string;
+  color: string;
+};
+
 export default function MemoPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -18,13 +25,13 @@ export default function MemoPage() {
   const { toast } = useToast();
 
   // Fetch memos
-  const { data: memos = [], isLoading } = useQuery({
+  const { data: memos = [], isLoading } = useQuery<Memo[]>({
     queryKey: ['/api/memos'],
   });
 
   // Create memo mutation
   const createMemoMutation = useMutation({
-    mutationFn: (newMemo: { title: string; content: string }) => 
+    mutationFn: (newMemo: MemoFormData) => 
       apiRequest('POST', '/api/memos', newMemo),
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['/api/memos'] });
@@ -45,7 +52,7 @@ export default function MemoPage() {
 
   // Update memo mutation
   const updateMemoMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: { title: string; content: string } }) => 
+    mutationFn: ({ id, data }: { id: number; data: MemoFormData }) => 
       apiRequest('PUT', `/api/memos/${id}`, data),
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['/api/memos'] });
@@ -103,7 +110,7 @@ export default function MemoPage() {
     setIsDeleteDialogOpen(true);
   };
 
-  const handleSubmitMemo = (data: { title: string; content: string }) => {
+  const handleSubmitMemo = (data: MemoFormData) => {
     if (isEditMode && currentMemo) {
       updateMemoMutation.mutate({ id: currentMemo.id, data });
     } else {

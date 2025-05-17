@@ -61,13 +61,15 @@ export class MemStorage implements IStorage {
     const id = this.currentMemoId++;
     const now = new Date();
     
-    // Ensure color has a default value if not provided
+    // クライアントからcolorを受け取れていないようなので、明示的に設定
     const color = insertMemo.color || "#ffffff";
     
+    // スプレッド演算子ではなく、各フィールドを明示的に設定
     const memo: Memo = {
-      ...insertMemo,
-      color,
       id,
+      title: insertMemo.title,
+      content: insertMemo.content,
+      color: color,  // 色を明示的に設定
       createdAt: now,
       updatedAt: now,
     };
@@ -83,13 +85,16 @@ export class MemStorage implements IStorage {
       return undefined;
     }
     
-    // Ensure color has a value
-    const color = updateData.color || memo.color;
+    // 色を明示的に設定
+    const color = updateData.color || memo.color || "#ffffff";
     
+    // 各フィールドを明示的に設定
     const updatedMemo: Memo = {
-      ...memo,
-      ...updateData,
-      color,
+      id: memo.id,
+      title: updateData.title || memo.title,
+      content: updateData.content || memo.content,
+      color: color,
+      createdAt: memo.createdAt,
       updatedAt: new Date(),
     };
     
